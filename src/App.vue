@@ -1,30 +1,30 @@
-<template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </div>
-  <router-view />
+<template lang="pug">
+router-view(v-slot="{ Component }")
+    keep-alive(exclude="order-index,modify-telephone,login-index")
+        component(:is="Component") 
 </template>
+<script>
+import { defineComponent, onMounted } from "vue";
+import helper from "@/utils/helper.js";
+import store from "@/store";
 
+export default defineComponent({
+    setup() {
+        onMounted(() => {
+            // 储存浏览器类型
+            store.commit("SET_NAVIGATOR_INFO", helper.is_weixin());
+        });
+        return {};
+    },
+});
+</script>
 <style lang="scss">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+    font-family: Avenir, Helvetica, Arial, sans-serif;
 }
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+::-webkit-scrollbar {
+    display: none;
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none;
 }
 </style>

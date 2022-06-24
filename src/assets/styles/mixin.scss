@@ -1,0 +1,140 @@
+// 字号相关
+$aura_fs_mini: 0.2rem;
+$aura_fs_small: 0.22rem;
+$aura_fs_xs: 0.24rem;
+$aura_fs_s: 0.26rem;
+$aura_fs_m: 0.28rem;
+$aura_fs_l: 0.3rem;
+$aura_fs_default: 0.32rem;
+$aura_fs_xxl: 0.36rem;
+
+// 字体颜色相关
+$aura_col_black: #1c1c1c;
+$aura_col_white: #fff;
+$aura_col_gray: #999;
+$aura_col_yellow: #ee7708;
+$aura_col_green: #70b603;
+// $aura_col_red: #be1528;
+$aura_col_red: #ff3737;
+$aura_col_blue: #75a3ff;
+
+// 背景色相关
+$aura_bg_white: #fff;
+$aura_bg_gray: #f5f5f5;
+$aura_bg_blue: #3c9cff;
+$aura_bg_yellow: #ee7708;
+$aura_bg_red: #ff3737;
+
+// 边框相关
+$aura_bd_gray: #f5f5f5;
+
+//盒子大小
+@mixin boxSize($w, $h) {
+    width: $w;
+    height: $h;
+}
+
+//字体常用
+@mixin fontColor($fs, $col, $leh, $fw: false, $center: false) {
+    font-size: $fs;
+    color: $col;
+    line-height: $leh;
+    @if $fw {
+        font-weight: bold;
+    }
+    @if $center {
+        text-align: center;
+    }
+}
+
+// //圆角
+@mixin radius($num) {
+    border-radius: $num;
+}
+
+//padding
+@mixin Padding($t, $l) {
+    box-sizing: border-box;
+    padding: $t $l;
+}
+
+// 设置背景图
+@mixin settingBackground(
+    $url,
+    $size: cover,
+    $repeat: no-repeat,
+    $position: center
+) {
+    background-image: url($url);
+    background-size: $size;
+    background-repeat: $repeat;
+    background-position: $position;
+}
+
+//单行多行超出省略号
+@mixin textEllipsis($rowCount: 1) {
+    @if $rowCount <=1 {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    } @else {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: $rowCount;
+        -webkit-box-orient: vertical;
+    }
+}
+
+//垂直居中
+@mixin layout-flex($position: absolute, $left: 50%, $top: 50%, $dir: -50%) {
+    position: $position;
+    left: $left;
+    top: $top;
+    transform: translate($dir, $dir);
+}
+
+//flex布局
+@mixin uflex(
+    $justify: space-between,
+    $align: center,
+    $direction: row,
+    $wrap: nowrap
+) {
+    display: flex;
+    justify-content: $justify;
+    align-items: $align;
+    flex-direction: $direction;
+    flex-wrap: $wrap;
+}
+
+//常用定位
+@mixin Position($position, $left, $top, $isleft: true, $istop: true) {
+    position: $position;
+
+    @if $isleft {
+        left: $left;
+    } @else {
+        right: $left;
+    }
+
+    @if $istop {
+        top: $top;
+    } @else {
+        bottom: $top;
+    }
+}
+
+// 自适应高度瀑布流
+@mixin waterfall($el, $count: 2, $gap: 20, $width: auto) {
+    @if $el == "father" {
+        column-count: $count;
+        column-gap: #{$gap}rpx;
+        column-width: $width;
+    } @else {
+        -moz-page-break-inside: avoid;
+        -webkit-column-break-inside: avoid;
+        break-inside: avoid;
+    }
+}
