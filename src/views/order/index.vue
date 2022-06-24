@@ -158,7 +158,7 @@ export default defineComponent({
         const wechatPay = () => {
             if (wechat.value) {
                 console.log("吊起微信支付jssdk");
-                // 微信内浏览器 微信jssdk支付
+                // 微信内浏览器 微信 jssdk 支付
                 if (!localStorage.OPENID) {
                     getWechatCode({
                         redirect_url: encodeURIComponent(window.location.href),
