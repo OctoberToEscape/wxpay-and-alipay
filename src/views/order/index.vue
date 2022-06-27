@@ -200,7 +200,7 @@ export default defineComponent({
                 pay_method: 2,
                 if_wechat_browser: 0,
                 real_name: data.course.real_name,
-                redirect_url: `${window.location.origin}/payment?channel_id=${route.query.channel_id}`,
+                redirect_url: `${window.location.origin}/aura-h5/payment?channel_id=${route.query.channel_id}`,
             }).then((res) => {
                 if (res.status === 1) {
                     window.location.href = res.data.mweb_url;
