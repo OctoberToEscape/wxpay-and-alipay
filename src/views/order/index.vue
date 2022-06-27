@@ -114,6 +114,7 @@ import {
     getWechatCode,
     getOpenid,
     wxPay,
+    searchOrder,
 } from "@/api/order";
 
 export default defineComponent({
@@ -199,7 +200,7 @@ export default defineComponent({
                 pay_method: 2,
                 if_wechat_browser: 0,
                 real_name: data.course.real_name,
-                redirect_url: window.location.href,
+                redirect_url: `${window.location.origin}/payment?channel_id=${route.query.channel_id}`,
             }).then((res) => {
                 if (res.status === 1) {
                     window.location.href = res.data.mweb_url;
@@ -311,9 +312,23 @@ export default defineComponent({
                 })
                     .then(() => {
                         console.log("支付成功,跳转支付成功");
+                        searchOrder({
+                            order_num: route.query.order_num,
+                        }).then((res) => {
+                            if (
+                                res.status === 1 &&
+                                res.data.trade_state === "SUCCESS"
+                            ) {
+                                router.push({
+                                    name: "pay-success",
+                                    query: {
+                                        order_num: route.query.order_num,
+                                    },
+                                });
+                            }
+                        });
                     })
                     .catch(() => {
-                        console.log("支付失败,重新支付");
                         getWxH5();
                     });
             }

@@ -42,6 +42,15 @@ export const aliPay = (data) => {
         });
 };
 
+// 查询订单接口
+export const searchOrder = (data) => {
+    return service
+        .post("/webOrder/queryOrder", qs.stringify(data))
+        .then((res) => {
+            return res;
+        });
+};
+
 // 取消订单接口
 export const cancelOrder = (data) => {
     return service
