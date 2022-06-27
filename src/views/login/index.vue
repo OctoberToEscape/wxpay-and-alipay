@@ -85,24 +85,26 @@ export default defineComponent({
                 getSmsCode({
                     phone: form.telephone,
                 }).then((res) => {
-                    Toast.success({
-                        message: res.msg,
-                    });
-                    let timer,
-                        num = 10;
-                    if (timer) clearInterval(timer);
+                    if (res.status === 1) {
+                        Toast.success({
+                            message: res.msg,
+                        });
+                        let timer,
+                            num = 10;
+                        if (timer) clearInterval(timer);
 
-                    timer = setInterval(() => {
-                        num--;
-                        if (num === 0) {
-                            clearInterval(timer);
-                            codeStatus.text = "获取验证码";
-                            codeStatus.disabled = false;
-                        } else {
-                            codeStatus.text = `${num}秒后重试`;
-                            codeStatus.disabled = true;
-                        }
-                    }, 1000);
+                        timer = setInterval(() => {
+                            num--;
+                            if (num === 0) {
+                                clearInterval(timer);
+                                codeStatus.text = "获取验证码";
+                                codeStatus.disabled = false;
+                            } else {
+                                codeStatus.text = `${num}秒后重试`;
+                                codeStatus.disabled = true;
+                            }
+                        }, 1000);
+                    }
                 });
             } else Toast({ message: "请输入正确手机号", duration: 1500 });
         };
@@ -114,13 +116,15 @@ export default defineComponent({
                 vcode: form.code,
                 type: 2,
             }).then((res) => {
-                Toast.success({
-                    message: res.msg,
-                });
-                store.dispatch("UPDATE_USER_INFO", res.userinfo);
-                setTimeout(() => {
-                    router.back();
-                }, 2000);
+                if (res.status === 1) {
+                    Toast.success({
+                        message: res.msg,
+                    });
+                    store.dispatch("UPDATE_USER_INFO", res.userinfo);
+                    setTimeout(() => {
+                        router.back();
+                    }, 2000);
+                }
             });
         };
 

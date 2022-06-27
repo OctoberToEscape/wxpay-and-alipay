@@ -154,21 +154,21 @@ export default defineComponent({
             }
         };
 
-        // 微信支付
+        // 微信支付方式
         const wechatPay = () => {
             if (wechat.value) {
-                console.log("吊起微信支付jssdk");
                 // 微信内浏览器 微信 jssdk 支付
                 if (!localStorage.OPENID) {
                     getWechatCode({
                         redirect_url: encodeURIComponent(window.location.href),
                     }).then((res) => {
-                        console.log(res.authurl);
+                        // console.log(res);
                         window.location.href = res.authurl;
                     });
+                } else {
+                    console.log("吊起微信支付jssdk");
                 }
             } else {
-                console.log("吊起微信支付h5商户号");
                 // 外部浏览器 微信H5支付
                 wxPay({
                     channel_id: route.query.channel_id,
@@ -176,26 +176,37 @@ export default defineComponent({
                     pay_method: 2,
                     if_wechat_browser: 0,
                     real_name: data.course.real_name,
-                    redirect_url: `${window.origin}/pay-success?order_num=`,
+                    redirect_url: `${window.origin}/aura-h5/pay-success?order_num=`,
                 }).then((res) => {
                     if (res.status === 1) {
-                        console.log(res.data.mweb_url);
-                        setTimeout(() => {
-                            window.location.href = res.data.mweb_url;
-                        }, 10000);
+                        window.location.href = res.data.mweb_url;
                     }
                 });
             }
         };
 
-        // 支付宝支付
+        // 微信jssdk调用
+        const onBridgeReady = (request_data) => {
+            WeixinJSBridge.invoke(
+                "getBrandWCPayRequest",
+                request_data,
+                function (res) {
+                    if (res.err_msg == "get_brand_wcpay_request:ok") {
+                        console.log("支付成功");
+                    } else {
+                    }
+                }
+            );
+        };
+
+        // 支付宝支付方式
         const alipay = () => {
             aliPay({
                 channel_id: route.query.channel_id,
                 uid: store.state.userInfo.id,
                 pay_method: 1,
                 real_name: data.course.real_name,
-                redirect_url: `${window.origin}/pay-success?order_num=`,
+                redirect_url: `${window.origin}/aura-h5/pay-success?order_num=`,
             }).then((res) => {
                 /**
                  * 为什么res要判断数据类型
