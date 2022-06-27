@@ -172,7 +172,8 @@ export default defineComponent({
                 // 外部浏览器 微信H5支付
                 wxPay({
                     channel_id: route.query.channel_id,
-                    uid: store.state.userInfo.id,
+                    // uid: store.state.userInfo.id,
+                    uid: 110110,
                     pay_method: 2,
                     if_wechat_browser: 0,
                     real_name: data.course.real_name,
