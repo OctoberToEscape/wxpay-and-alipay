@@ -62,7 +62,7 @@ import { useRouter } from "vue-router";
 import { validatorTelephone } from "@/utils/common";
 import { Toast } from "vant";
 import { login, getSmsCode } from "@/api/login";
-import { ruleRich } from "@/plugins/rule";
+import { ruleRich } from "@/utils/rule";
 import rulePopup from "@/components/popup/rule-popup.vue";
 import store from "@/store";
 

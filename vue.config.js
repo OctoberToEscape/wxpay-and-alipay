@@ -5,7 +5,7 @@ module.exports = {
     outputDir: "dist",
     assetsDir: "static",
     lintOnSave: false,
-    publicPath: process.env.NODE_ENV === "production" ? "../aura-h5/" : "/",
+    publicPath: process.env.NODE_ENV === "production" ? "/aura-h5" : "/",
     productionSourceMap: false,
     css: {
         loaderOptions: {
