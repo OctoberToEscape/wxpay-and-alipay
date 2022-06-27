@@ -106,7 +106,7 @@ import {
 import rulePopup from "@/components/popup/rule-popup.vue";
 import store from "@/store";
 import { useRouter, useRoute } from "vue-router";
-import { Toast } from "vant";
+import { Toast, Dialog } from "vant";
 import {
     orderDetails,
     aliPay,
@@ -166,34 +166,79 @@ export default defineComponent({
                         window.location.href = res.authurl;
                     });
                 } else {
-                    console.log("吊起微信支付jssdk");
+                    console.log("拿jssdk参数 吊起微信支付jssdk");
                 }
             } else {
                 // 外部浏览器 微信H5支付
-                wxPay({
-                    channel_id: route.query.channel_id,
-                    uid: store.state.userInfo.id,
-                    pay_method: 2,
-                    if_wechat_browser: 0,
-                    real_name: data.course.real_name,
-                    redirect_url: `${window.origin}/aura-h5/pay-success?order_num=`,
-                }).then((res) => {
-                    if (res.status === 1) {
-                        window.location.href = res.data.mweb_url;
-                    }
-                });
+                getWxH5();
             }
         };
 
-        // 微信jssdk调用
+        // 微信H5商户号支付
+        const getWxH5 = () => {
+            wxPay({
+                channel_id: route.query.channel_id,
+                uid: store.state.userInfo.id,
+                pay_method: 2,
+                if_wechat_browser: 0,
+                real_name: data.course.real_name,
+                redirect_url: window.location.href,
+            }).then((res) => {
+                if (res.status === 1) {
+                    window.location.href = res.data.mweb_url;
+                }
+            });
+        };
+
+        // 吊起微信jssdk支付传参
+        const getWxJSSDK = (result) => {
+            var appId = result.appId;
+            var timeStamp = result.timeStamp;
+            var nonceStr = result.nonceStr;
+            var paySign = result.paySign;
+            //封装请求数据
+            var request_data = {
+                appId: appId,
+                timeStamp: timeStamp,
+                nonceStr: nonceStr,
+                package: result.package,
+                signType: "MD5",
+                paySign: paySign,
+            };
+
+            if (typeof WeixinJSBbridge == "undifine") {
+                if (document.addEventListener) {
+                    document.addEventListener(
+                        "WeixinJSBridgeReady",
+                        onBridgeReady(request_data),
+                        false
+                    );
+                } else if (document.attachEvent) {
+                    document.attachEvent(
+                        "WeixinJSBridgeReady",
+                        onBridgeReady(request_data)
+                    );
+                    document.attachEvent(
+                        "OnWeixinJSBridgeReady",
+                        onBridgeReady(request_data)
+                    );
+                }
+            } else {
+                onBridgeReady(request_data);
+            }
+        };
+
+        // 微信jssdk
         const onBridgeReady = (request_data) => {
             WeixinJSBridge.invoke(
                 "getBrandWCPayRequest",
                 request_data,
                 function (res) {
+                    console.log(res);
                     if (res.err_msg == "get_brand_wcpay_request:ok") {
                         console.log("支付成功");
                     } else {
+                        console.log("失败");
                     }
                 }
             );
@@ -233,7 +278,27 @@ export default defineComponent({
         const finish = () => getData();
 
         onMounted(() => {
+            // 拿数据
             getData();
+
+            // 是否微信H5支付页面跳转回来
+            if (route.query.isAlert === "1") {
+                Dialog.confirm({
+                    title: "提示",
+                    message: "请确认微信支付是否已经完成",
+                    confirmButtonText: "已完成支付",
+                    cancelButtonText: "重新支付",
+                })
+                    .then(() => {
+                        // on confirm
+                        console.log("支付成功,跳转支付成功");
+                    })
+                    .catch(() => {
+                        console.log("支付失败,重新支付");
+                        getWxH5();
+                        // on cancel
+                    });
+            }
         });
 
         return {
@@ -245,6 +310,9 @@ export default defineComponent({
             finish,
             handleBuy,
             wechatPay,
+            getWxH5,
+            getWxJSSDK,
+            onBridgeReady,
             alipay,
         };
     },
