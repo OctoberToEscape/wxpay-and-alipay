@@ -107,6 +107,7 @@ import rulePopup from "@/components/popup/rule-popup.vue";
 import store from "@/store";
 import { useRouter, useRoute } from "vue-router";
 import { Toast, Dialog } from "vant";
+import { getUrlParam } from "@/utils/common";
 import {
     orderDetails,
     aliPay,
@@ -124,6 +125,7 @@ export default defineComponent({
         const checked = ref(false);
         const ruleShow = ref(false);
         const payChoose = ref("1");
+        const code = ref("");
         const data = reactive({ course: {} });
 
         const getData = () => {
@@ -154,16 +156,31 @@ export default defineComponent({
             }
         };
 
+        // 获取微信code
+        const getWxCode = () => {
+            const code = getUrlParam("code");
+            if (code == null || code === "") {
+                // 不存在授权
+                getWechatCode({
+                    redirect_url: encodeURIComponent(window.location.href),
+                }).then((res) => {
+                    window.location.href = res.authurl;
+                });
+            } else {
+                code.value = code;
+            }
+        };
+
         // 微信支付方式
         const wechatPay = () => {
             if (wechat.value) {
                 // 微信内浏览器 微信 jssdk 支付
                 if (!localStorage.OPENID) {
-                    getWechatCode({
-                        redirect_url: encodeURIComponent(window.location.href),
+                    getOpenid({
+                        code: code.value,
                     }).then((res) => {
-                        // console.log(res);
-                        window.location.href = res.authurl;
+                        console.log(res);
+                        localStorage.OPENID = res.data.openid;
                     });
                 } else {
                     console.log("拿jssdk参数 吊起微信支付jssdk");
@@ -278,11 +295,14 @@ export default defineComponent({
         const finish = () => getData();
 
         onMounted(() => {
+            // 授权拿code
+            if (wechat.value) getWxCode();
+
             // 拿数据
             getData();
 
             // 是否微信H5支付页面跳转回来
-            if (route.query.isAlert === "1") {
+            if (route.query.isAlert && route.query.isAlert === "1") {
                 Dialog.confirm({
                     title: "提示",
                     message: "请确认微信支付是否已经完成",
@@ -290,23 +310,23 @@ export default defineComponent({
                     cancelButtonText: "重新支付",
                 })
                     .then(() => {
-                        // on confirm
                         console.log("支付成功,跳转支付成功");
                     })
                     .catch(() => {
                         console.log("支付失败,重新支付");
                         getWxH5();
-                        // on cancel
                     });
             }
         });
 
         return {
+            code,
             checked,
             ruleShow,
             payChoose,
             wechat,
             ...toRefs(data),
+            getWxCode,
             finish,
             handleBuy,
             wechatPay,
