@@ -164,14 +164,14 @@ export default defineComponent({
             console.log("code-params", code.value);
             if (code.value == null || code.value === "") {
                 // 不存在授权
-                // window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2aa465e8ca0f0986&redirect_uri=${encodeURIComponent(
-                //     window.location.href
-                // )}&response_type=code&scope=snsapi_base#wechat_redirect`;
-                getWechatCode({
-                    redirect_url: encodeURIComponent(window.location.href),
-                }).then((res) => {
-                    window.location.href = res.authurl;
-                });
+                window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2aa465e8ca0f0986&redirect_uri=${encodeURIComponent(
+                    window.location.href
+                )}&response_type=code&scope=snsapi_base#wechat_redirect`;
+                // getWechatCode({
+                //     redirect_url: encodeURIComponent(window.location.href),
+                // }).then((res) => {
+                //     window.location.href = res.authurl;
+                // });
             } else {
                 // code.value = code;
                 getOpenid({
