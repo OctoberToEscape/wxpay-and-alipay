@@ -4,7 +4,7 @@
         .top-cover
             .title.mb-25
                 van-icon(name="checked" size=".46rem" color="#fff")
-                span.ml-10 支付成功
+                span.ml-10 购买成功
             .desc 您已成功购买“{{course.name}}”
         .course-content.mb-20
             .course-info

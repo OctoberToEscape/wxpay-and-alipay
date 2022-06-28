@@ -129,6 +129,7 @@ export default defineComponent({
         const code = ref("");
         const data = reactive({ course: {} });
 
+        // 页面数据
         const getData = () => {
             let { channel_id } = route.query;
             orderDetails({
@@ -159,16 +160,26 @@ export default defineComponent({
 
         // 获取微信code
         const getWxCode = () => {
-            const code = getUrlParam("code");
-            if (code == null || code === "") {
+            code.value = getUrlParam("code");
+            console.log("code-params", code.value);
+            if (code.value == null || code.value === "") {
                 // 不存在授权
-                getWechatCode({
-                    redirect_url: encodeURIComponent(window.location.href),
-                }).then((res) => {
-                    window.location.href = res.authurl;
-                });
+                window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2aa465e8ca0f0986&redirect_uri=${encodeURIComponent(
+                    window.location.href
+                )}&response_type=code&scope=snsapi_base#wechat_redirect`;
+
+                // getWechatCode({
+                //     redirect_url: encodeURIComponent(window.location.href),
+                // }).then((res) => {
+                //     window.location.href = res.authurl;
+                // });
             } else {
-                code.value = code;
+                // code.value = code;
+                getOpenid({
+                    code: code.value,
+                }).then((res) => {
+                    console.log(`openid`, res);
+                });
             }
         };
 
@@ -177,14 +188,19 @@ export default defineComponent({
             if (wechat.value) {
                 // 微信内浏览器 微信 jssdk 支付
                 if (!localStorage.OPENID) {
-                    getOpenid({
-                        code: code.value,
-                    }).then((res) => {
-                        console.log(res);
-                        localStorage.OPENID = res.data.openid;
-                    });
+                    getWxCode();
                 } else {
                     console.log("拿jssdk参数 吊起微信支付jssdk");
+                    wxPay({
+                        channel_id: route.query.channel_id,
+                        uid: store.state.userInfo.id,
+                        pay_method: 2,
+                        if_wechat_browser: 1,
+                        real_name: data.course.real_name,
+                        openid: localStorage.OPENID,
+                    }).then((res) => {
+                        console.log("jssdk", res);
+                    });
                 }
             } else {
                 // 外部浏览器 微信H5支付
@@ -204,6 +220,20 @@ export default defineComponent({
             }).then((res) => {
                 if (res.status === 1) {
                     window.location.href = res.data.mweb_url;
+                } else if (res.status === 3) {
+                    Toast({
+                        message: `${res.msg},跳转支付结果页...`,
+                    });
+                    setTimeout(() => {
+                        router.push({
+                            name: "pay-success",
+                            query: {
+                                order_num:
+                                    route.query.order_num ||
+                                    data.course.order_num,
+                            },
+                        });
+                    }, 1500);
                 }
             });
         };
@@ -283,6 +313,20 @@ export default defineComponent({
                     div.innerHTML = res;
                     document.body.appendChild(div);
                     document.forms[0].submit();
+                } else if (typeof res === "object" && res.status === 3) {
+                    Toast({
+                        message: `${res.msg},跳转支付结果页...`,
+                    });
+                    setTimeout(() => {
+                        router.push({
+                            name: "pay-success",
+                            query: {
+                                order_num:
+                                    route.query.order_num ||
+                                    data.course.order_num,
+                            },
+                        });
+                    }, 1500);
                 }
             });
         };
@@ -311,14 +355,10 @@ export default defineComponent({
                     cancelButtonText: "重新支付",
                 })
                     .then(() => {
-                        console.log("支付成功,跳转支付成功");
                         searchOrder({
                             order_num: route.query.order_num,
                         }).then((res) => {
-                            if (
-                                res.status === 1 &&
-                                res.data.trade_state === "SUCCESS"
-                            ) {
+                            if (res.status === 1) {
                                 router.push({
                                     name: "pay-success",
                                     query: {
