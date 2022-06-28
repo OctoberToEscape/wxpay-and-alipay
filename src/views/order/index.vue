@@ -160,30 +160,11 @@ export default defineComponent({
 
         // 微信支付方式
         const wechatPay = () => {
-            if (wechat.value) {
-                // 微信内浏览器 微信 jssdk 支付
-                if (!localStorage.OPENID) {
-                    getWxCode();
-                } else {
-                    console.log("拿jssdk参数 吊起微信支付jssdk");
-                    wxPay({
-                        channel_id: route.query.channel_id,
-                        uid: store.state.userInfo.id,
-                        pay_method: 2,
-                        if_wechat_browser: 1,
-                        real_name: data.course.real_name,
-                        openid: localStorage.OPENID,
-                    }).then((res) => {
-                        console.log("jssdk", res);
-                        if (res.status === 1) {
-                            getWxJSSDK(res.data);
-                        }
-                    });
-                }
-            } else {
-                // 外部浏览器 微信H5支付
-                getWxH5();
-            }
+            wechat.value
+                ? !localStorage.OPENID
+                    ? getWxCode()
+                    : wxpayRequest()
+                : getWxH5();
         };
 
         // 获取微信code
@@ -195,15 +176,33 @@ export default defineComponent({
                 // const appid = "wx2aa465e8ca0f0986"; // online
                 window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(
                     window.location.href
-                )}&response_type=code&scope=snsapi_base#wechat_redirect`;
+                )}&response_type=code&scope=snsapi_userinfo#wechat_redirect`;
             } else {
                 getOpenid({
                     code: code.value,
                 }).then((res) => {
-                    console.log("openid", res);
-                    if (res.status === 1) localStorage.OPENID = res.data.openid;
+                    if (res.status === 1) {
+                        localStorage.OPENID = res.data.openid;
+                        wxpayRequest();
+                    }
                 });
             }
+        };
+
+        // 微信支付->自己接口
+        const wxpayRequest = () => {
+            wxPay({
+                channel_id: route.query.channel_id,
+                uid: store.state.userInfo.id,
+                pay_method: 2,
+                if_wechat_browser: 1,
+                real_name: data.course.real_name,
+                openid: localStorage.OPENID,
+            }).then((res) => {
+                if (res.status === 1) {
+                    getWxJSSDK(res.data);
+                }
+            });
         };
 
         // 微信H5商户号支付
@@ -238,7 +237,6 @@ export default defineComponent({
 
         // 吊起微信jssdk支付传参
         const getWxJSSDK = (result) => {
-            //封装请求数据
             var request_data = {
                 appId: result.appid,
                 timeStamp: result.timestamp,
@@ -277,7 +275,6 @@ export default defineComponent({
                 "getBrandWCPayRequest",
                 request_data,
                 function (res) {
-                    console.log("jssdk-res", res);
                     if (res.err_msg == "get_brand_wcpay_request:ok") {
                         Toast.success("支付成功");
                         setTimeout(() => {
@@ -289,12 +286,16 @@ export default defineComponent({
                             });
                         }, 1500);
                     } else {
-                        console.log("失败或者取消");
+                        // 取消订单
                         cancelOrder({
                             order_num: request_data.order_num,
                             uid: store.state.userInfo.id,
                         }).then((res) => {
-                            console.log("取消订单", res);
+                            if (res.status === 1) {
+                                Toast({
+                                    message: "支付失败",
+                                });
+                            }
                         });
                     }
                 }
@@ -349,9 +350,6 @@ export default defineComponent({
         const finish = () => getData();
 
         onMounted(() => {
-            // 授权拿code
-            // if (wechat.value) getWxCode();
-
             // 拿数据
             getData();
 
@@ -391,13 +389,14 @@ export default defineComponent({
             wechat,
             ...toRefs(data),
             getWxCode,
-            finish,
+            wxpayRequest,
             handleBuy,
             wechatPay,
             getWxH5,
             getWxJSSDK,
             onBridgeReady,
             alipay,
+            finish,
         };
     },
 });
