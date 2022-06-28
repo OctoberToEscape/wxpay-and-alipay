@@ -201,6 +201,20 @@ export default defineComponent({
             }).then((res) => {
                 if (res.status === 1) {
                     getWxJSSDK(res.data);
+                } else if (res.status === 3) {
+                    Toast({
+                        message: `${res.msg},跳转支付结果页...`,
+                    });
+                    setTimeout(() => {
+                        router.push({
+                            name: "pay-success",
+                            query: {
+                                order_num:
+                                    route.query.order_num ||
+                                    data.course.order_num,
+                            },
+                        });
+                    }, 1500);
                 }
             });
         };
