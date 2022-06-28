@@ -194,7 +194,7 @@ export default defineComponent({
         .top-cover {
             @include Padding(0.28rem, 0.3rem);
             @include boxSize(100%, 3.38rem);
-            @include settingBackground("~@/assets/images/order/success-bg.png");
+            @include settingBackground("/static/img/success-bg.28fbf39a.png");
             padding-top: 1.3rem;
             .title {
                 @include uflex(center);

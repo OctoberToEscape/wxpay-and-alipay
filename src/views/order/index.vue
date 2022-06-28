@@ -111,7 +111,6 @@ import { getUrlParam } from "@/utils/common";
 import {
     orderDetails,
     aliPay,
-    getWechatCode,
     getOpenid,
     wxPay,
     searchOrder,
@@ -167,12 +166,6 @@ export default defineComponent({
                 window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2aa465e8ca0f0986&redirect_uri=${encodeURIComponent(
                     window.location.href
                 )}&response_type=code&scope=snsapi_base#wechat_redirect`;
-
-                // getWechatCode({
-                //     redirect_url: encodeURIComponent(window.location.href),
-                // }).then((res) => {
-                //     window.location.href = res.authurl;
-                // });
             } else {
                 // code.value = code;
                 getOpenid({
