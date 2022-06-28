@@ -158,30 +158,6 @@ export default defineComponent({
             }
         };
 
-        // 获取微信code
-        const getWxCode = () => {
-            code.value = getUrlParam("code");
-            console.log("code-params", code.value);
-            if (code.value == null || code.value === "") {
-                // 不存在授权
-                window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2aa465e8ca0f0986&redirect_uri=${encodeURIComponent(
-                    window.location.href
-                )}&response_type=code&scope=snsapi_base#wechat_redirect`;
-                // getWechatCode({
-                //     redirect_url: encodeURIComponent(window.location.href),
-                // }).then((res) => {
-                //     window.location.href = res.authurl;
-                // });
-            } else {
-                // code.value = code;
-                getOpenid({
-                    code: code.value,
-                }).then((res) => {
-                    console.log(`openid`, res);
-                });
-            }
-        };
-
         // 微信支付方式
         const wechatPay = () => {
             if (wechat.value) {
@@ -204,6 +180,26 @@ export default defineComponent({
             } else {
                 // 外部浏览器 微信H5支付
                 getWxH5();
+            }
+        };
+
+        // 获取微信code
+        const getWxCode = () => {
+            code.value = getUrlParam("code");
+            console.log("code-params", code.value);
+            if (code.value == null || code.value === "") {
+                const appid = "wx9804ea25d5e208e5"; // test
+                // const appid = "wx2aa465e8ca0f0986"; // online
+                window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(
+                    window.location.href
+                )}&response_type=code&scope=snsapi_base#wechat_redirect`;
+            } else {
+                getOpenid({
+                    code: code.value,
+                }).then((res) => {
+                    console.log("openid", res);
+                    if (res.status === 1) localStorage.OPENID = res.data.openid;
+                });
             }
         };
 
