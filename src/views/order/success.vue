@@ -194,7 +194,9 @@ export default defineComponent({
         .top-cover {
             @include Padding(0.28rem, 0.3rem);
             @include boxSize(100%, 3.38rem);
-            @include settingBackground("~@/assets/images/order/success-bg.png");
+            @include settingBackground(
+                "https://img01.feimayun.com/wx/manage/kc/2022/2022-06/20220628163704_9331_750x338.png"
+            );
             padding-top: 1.3rem;
             .title {
                 @include uflex(center);
