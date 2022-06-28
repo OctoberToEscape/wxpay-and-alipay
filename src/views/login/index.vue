@@ -90,7 +90,7 @@ export default defineComponent({
                             message: res.msg,
                         });
                         let timer,
-                            num = 10;
+                            num = 60;
                         if (timer) clearInterval(timer);
 
                         timer = setInterval(() => {
