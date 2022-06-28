@@ -112,7 +112,7 @@ import {
     orderDetails,
     aliPay,
     getOpenid,
-    getWechatCode,
+    cancelOrder,
     wxPay,
     searchOrder,
 } from "@/api/order";
@@ -175,6 +175,9 @@ export default defineComponent({
                         openid: localStorage.OPENID,
                     }).then((res) => {
                         console.log("jssdk", res);
+                        if (res.status === 1) {
+                            getWxJSSDK(res.data);
+                        }
                     });
                 }
             } else {
@@ -235,18 +238,15 @@ export default defineComponent({
 
         // 吊起微信jssdk支付传参
         const getWxJSSDK = (result) => {
-            var appId = result.appId;
-            var timeStamp = result.timeStamp;
-            var nonceStr = result.nonceStr;
-            var paySign = result.paySign;
             //封装请求数据
             var request_data = {
-                appId: appId,
-                timeStamp: timeStamp,
-                nonceStr: nonceStr,
+                appId: result.appid,
+                timeStamp: result.timestamp,
+                nonceStr: result.noncestr,
                 package: result.package,
                 signType: "MD5",
-                paySign: paySign,
+                paySign: result.sign2,
+                order_num: result.order_num,
             };
 
             if (typeof WeixinJSBbridge == "undifine") {
@@ -277,11 +277,25 @@ export default defineComponent({
                 "getBrandWCPayRequest",
                 request_data,
                 function (res) {
-                    console.log(res);
+                    console.log("jssdk-res", res);
                     if (res.err_msg == "get_brand_wcpay_request:ok") {
-                        console.log("支付成功");
+                        Toast.success("支付成功");
+                        setTimeout(() => {
+                            router.push({
+                                name: "pay-success",
+                                query: {
+                                    order_num: request_data.order_num,
+                                },
+                            });
+                        }, 1500);
                     } else {
-                        console.log("失败");
+                        console.log("失败或者取消");
+                        cancelOrder({
+                            order_num: request_data.order_num,
+                            uid: store.state.userInfo.id,
+                        }).then((res) => {
+                            console.log("取消订单", res);
+                        });
                     }
                 }
             );
@@ -336,7 +350,7 @@ export default defineComponent({
 
         onMounted(() => {
             // 授权拿code
-            if (wechat.value) getWxCode();
+            // if (wechat.value) getWxCode();
 
             // 拿数据
             getData();
