@@ -141,9 +141,9 @@ export default defineComponent({
         };
 
         // 重复支付status === 3 的跳转
-        const routerJump = () => {
+        const routerJump = (title) => {
             Toast({
-                message: `${res.msg},跳转支付结果页...`,
+                message: `${title},跳转支付结果页...`,
             });
             setTimeout(() => {
                 router.push({
@@ -215,7 +215,7 @@ export default defineComponent({
                 openid: localStorage.OPENID,
             }).then((res) => {
                 if (res.status === 1) getWxJSSDK(res.data);
-                else if (res.status === 3) routerJump();
+                else if (res.status === 3) routerJump(res.msg);
             });
         };
 
@@ -230,7 +230,7 @@ export default defineComponent({
                 redirect_url: `${window.location.origin}/aura-h5/payment?channel_id=${route.query.channel_id}`,
             }).then((res) => {
                 if (res.status === 1) window.location.href = res.data.mweb_url;
-                else if (res.status === 3) routerJump();
+                else if (res.status === 3) routerJump(res.msg);
             });
         };
 
@@ -323,7 +323,7 @@ export default defineComponent({
                     document.body.appendChild(div);
                     document.forms[0].submit();
                 } else if (typeof res === "object" && res.status === 3) {
-                    routerJump();
+                    routerJump(res.msg);
                 }
             });
         };
