@@ -140,6 +140,22 @@ export default defineComponent({
             });
         };
 
+        // 重复支付status === 3 的跳转
+        const routerJump = () => {
+            Toast({
+                message: `${res.msg},跳转支付结果页...`,
+            });
+            setTimeout(() => {
+                router.push({
+                    name: "pay-success",
+                    query: {
+                        order_num:
+                            route.query.order_num || data.course.order_num,
+                    },
+                });
+            }, 1500);
+        };
+
         // 支付按钮点击
         const handleBuy = () => {
             const userinfo = localStorage.userInfo;
@@ -170,7 +186,6 @@ export default defineComponent({
         // 获取微信code
         const getWxCode = () => {
             code.value = getUrlParam("code");
-            console.log("code-params", code.value);
             if (code.value == null || code.value === "") {
                 const appid = "wx9804ea25d5e208e5"; // test
                 // const appid = "wx2aa465e8ca0f0986"; // online
@@ -199,23 +214,8 @@ export default defineComponent({
                 real_name: data.course.real_name,
                 openid: localStorage.OPENID,
             }).then((res) => {
-                if (res.status === 1) {
-                    getWxJSSDK(res.data);
-                } else if (res.status === 3) {
-                    Toast({
-                        message: `${res.msg},跳转支付结果页...`,
-                    });
-                    setTimeout(() => {
-                        router.push({
-                            name: "pay-success",
-                            query: {
-                                order_num:
-                                    route.query.order_num ||
-                                    data.course.order_num,
-                            },
-                        });
-                    }, 1500);
-                }
+                if (res.status === 1) getWxJSSDK(res.data);
+                else if (res.status === 3) routerJump();
             });
         };
 
@@ -229,23 +229,8 @@ export default defineComponent({
                 real_name: data.course.real_name,
                 redirect_url: `${window.location.origin}/aura-h5/payment?channel_id=${route.query.channel_id}`,
             }).then((res) => {
-                if (res.status === 1) {
-                    window.location.href = res.data.mweb_url;
-                } else if (res.status === 3) {
-                    Toast({
-                        message: `${res.msg},跳转支付结果页...`,
-                    });
-                    setTimeout(() => {
-                        router.push({
-                            name: "pay-success",
-                            query: {
-                                order_num:
-                                    route.query.order_num ||
-                                    data.course.order_num,
-                            },
-                        });
-                    }, 1500);
-                }
+                if (res.status === 1) window.location.href = res.data.mweb_url;
+                else if (res.status === 3) routerJump();
             });
         };
 
@@ -338,19 +323,7 @@ export default defineComponent({
                     document.body.appendChild(div);
                     document.forms[0].submit();
                 } else if (typeof res === "object" && res.status === 3) {
-                    Toast({
-                        message: `${res.msg},跳转支付结果页...`,
-                    });
-                    setTimeout(() => {
-                        router.push({
-                            name: "pay-success",
-                            query: {
-                                order_num:
-                                    route.query.order_num ||
-                                    data.course.order_num,
-                            },
-                        });
-                    }, 1500);
+                    routerJump();
                 }
             });
         };
@@ -402,9 +375,10 @@ export default defineComponent({
             payChoose,
             wechat,
             ...toRefs(data),
+            routerJump,
+            handleBuy,
             getWxCode,
             wxpayRequest,
-            handleBuy,
             wechatPay,
             getWxH5,
             getWxJSSDK,
