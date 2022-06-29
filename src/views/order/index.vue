@@ -140,7 +140,13 @@ export default defineComponent({
                     data.course = res;
                     if (res.end_time !== 0) {
                         if (res.end_time - res.system_time <= 0) {
-                            router.push({ name: "error", query: { type: 1 } });
+                            router.push({
+                                name: "error",
+                                query: {
+                                    type: "search",
+                                    title: "当前活动已过期～",
+                                },
+                            });
                         }
                     }
                 }

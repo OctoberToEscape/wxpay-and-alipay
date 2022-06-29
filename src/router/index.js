@@ -81,7 +81,11 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     // 页面404
     const result = routes.some((item) => item.path === to.path);
-    if (!result) next({ name: "error", query: { type: 0 } });
+    if (!result)
+        next({
+            name: "error",
+            query: { type: "error", title: "404 页面不存在" },
+        });
     // 页面标题
     if (to.meta.title) document.title = to.meta.title;
     next();
