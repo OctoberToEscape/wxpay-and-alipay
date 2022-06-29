@@ -1,15 +1,29 @@
 <template lang="pug">
 .error-index
     .empty
-        van-empty(image="error" description="404 页面不存在")
+        van-empty(
+            :image="type === '0' ? 'error' : 'search'" 
+            :description="type === '0' ? '404 页面不存在' : '当前活动已过期～'")
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
+import { useRoute } from "vue-router";
 
 export default defineComponent({
     name: "error-index",
-    setup() {},
+    setup() {
+        const route = useRoute();
+        const type = ref(0);
+
+        onMounted(() => {
+            type.value = route.query.type;
+            document.title =
+                route.query.type === "0" ? "页面不存在" : "活动已过期";
+        });
+
+        return { type };
+    },
 });
 </script>
 

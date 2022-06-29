@@ -64,7 +64,7 @@
                             van-icon(
                                 name="alipay" 
                                 size=".52rem" 
-                                color="#108ee9 ")
+                                color="#108ee9")
                             span.ml-10 支付宝支付
                         template(#right-icon)
                             van-radio(name="2" checked-color="#ff3737") 
@@ -136,7 +136,14 @@ export default defineComponent({
                 channel_id,
                 uid: store.state.userInfo ? store.state.userInfo.id : "",
             }).then((res) => {
-                if (res) data.course = res;
+                if (res) {
+                    data.course = res;
+                    if (res.end_time !== 0) {
+                        if (res.end_time - res.system_time <= 0) {
+                            router.push({ name: "error", query: { type: 1 } });
+                        }
+                    }
+                }
             });
         };
 

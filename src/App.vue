@@ -1,6 +1,6 @@
 <template lang="pug">
 router-view(v-slot="{ Component }")
-    keep-alive(exclude="order-index,modify-telephone,login-index")
+    keep-alive(exclude="order-index,modify-telephone,login-index,error-index")
         component(:is="Component") 
 </template>
 <script>
