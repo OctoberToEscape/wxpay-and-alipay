@@ -127,10 +127,10 @@ $aura_bd_gray: #f5f5f5;
 }
 
 // 自适应高度瀑布流
-@mixin waterfall($el, $count: 2, $gap: 20, $width: auto) {
+@mixin waterfall($el, $count: 2, $gap: 0.2, $width: auto) {
     @if $el == "father" {
         column-count: $count;
-        column-gap: #{$gap}rpx;
+        column-gap: #{$gap}rem;
         column-width: $width;
     } @else {
         -moz-page-break-inside: avoid;
