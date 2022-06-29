@@ -337,7 +337,6 @@ export default defineComponent({
         const finish = () => getData();
 
         onMounted(() => {
-            console.log(2222);
             // 拿数据
             getData();
 
