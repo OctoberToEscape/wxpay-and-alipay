@@ -47,7 +47,7 @@
             .val ￥4000.00       
         .pay
             .text 实付
-            .val.active ￥{{course.preferential_price}}
+            .val.active ￥{{course.pay_price}}
     .real-name
         .text 真实姓名
         .val {{course.real_name}}

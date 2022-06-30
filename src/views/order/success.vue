@@ -33,10 +33,10 @@
             .course-price.mb-30
                 .text 商品金额
                 .val ￥{{course.price}}
-            .course-sale.mb-30
+            .course-sale
                 .text 限时优惠
-                .val ￥{{course.price - course.rprice}}    
-            .course-coupons
+                .val.active -￥{{course.price - course.rprice}}    
+            //.course-coupons
                 .text 优惠卷
                 .val.active -￥{{course.discount_price}}  
         .real-name.mb-20

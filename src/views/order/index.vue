@@ -1,7 +1,7 @@
 <template lang="pug">
 .order-index
     van-nav-bar(
-        title="确认订单"
+        :title="course.channel_name"
         safe-area-inset-top
         fixed
         placeholder
@@ -79,7 +79,7 @@
         .left(v-if="course.end_time - course.system_time > 0")
             .text.mb-10 特价倒计时
             van-count-down(
-                :time="course.end_time - course.system_time"
+                :time="(course.end_time - course.system_time) * 1000"
                 format="DD 天 HH : mm : ss"
                 @finish="finish")
         div(:class="course.end_time - course.system_time > 0 ? 'right-mini ' : 'right-lang'")
@@ -138,6 +138,7 @@ export default defineComponent({
             }).then((res) => {
                 if (res) {
                     data.course = res;
+                    document.title = res.channel_name;
                     if (res.end_time !== 0) {
                         if (res.end_time - res.system_time <= 0) {
                             router.push({
