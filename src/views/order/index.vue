@@ -230,6 +230,7 @@ export default defineComponent({
             }).then((res) => {
                 if (res.status === 1) getWxJSSDK(res.data);
                 else if (res.status === 3) routerJump(res.msg);
+                else if (res.status === 4) Toast(res.msg);
             });
         };
 
@@ -245,6 +246,7 @@ export default defineComponent({
             }).then((res) => {
                 if (res.status === 1) window.location.href = res.data.mweb_url;
                 else if (res.status === 3) routerJump(res.msg);
+                else if (res.status === 4) Toast(res.msg);
             });
         };
 
@@ -338,6 +340,8 @@ export default defineComponent({
                     document.forms[0].submit();
                 } else if (typeof res === "object" && res.status === 3) {
                     routerJump(res.msg);
+                } else if (typeof res === "object" && res.status === 4) {
+                    Toast(res.msg);
                 }
             });
         };
