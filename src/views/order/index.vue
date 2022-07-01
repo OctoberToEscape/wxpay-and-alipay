@@ -201,9 +201,9 @@ export default defineComponent({
         const getWxCode = () => {
             code.value = getUrlParam("code");
             if (code.value == null || code.value === "") {
-                const appid = "wx9804ea25d5e208e5"; // test
-                // const appid = "wx2aa465e8ca0f0986"; // online
-                window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(
+                window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${
+                    process.env.VUE_APP_BASE_APPID
+                }&redirect_uri=${encodeURIComponent(
                     window.location.href
                 )}&response_type=code&scope=snsapi_userinfo#wechat_redirect`;
             } else {
