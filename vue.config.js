@@ -1,6 +1,8 @@
 const path = require("path");
 const { VantResolver } = require("unplugin-vue-components/resolvers");
 const ComponentsPlugin = require("unplugin-vue-components/webpack");
+const CompressionPlugin = require("compression-webpack-plugin");
+const productionGzipExtensions = /\.(js|css|json|txt|html|ico|svg)(\?.*)?$/i;
 module.exports = {
     outputDir: "dist",
     assetsDir: "static",
@@ -42,6 +44,17 @@ module.exports = {
                 },
                 devtool: "source-map",
             };
+        } else if (process.env.NODE_ENV === "production") {
+            return {
+                performance: {
+                    hints: "warning",
+                    maxEntrypointSize: 50000000,
+                    maxAssetSize: 30000000,
+                    assetFilter: (assetFilename) => {
+                        return assetFilename.endsWith(".js");
+                    },
+                },
+            };
         }
 
         return {
@@ -72,5 +85,22 @@ module.exports = {
             .options({
                 symbolId: "icon-[name]",
             });
+
+        config
+            .plugin("webpack-bundle-analyzer")
+            .use(require("webpack-bundle-analyzer").BundleAnalyzerPlugin);
+
+        if (process.env.NODE_ENV === "production") {
+            config.plugin("compressionPlugin").use(
+                new CompressionPlugin({
+                    filename: "[path].gz[query]", // 压缩后的文件名(保持原文件名，后缀加.gz)
+                    algorithm: "gzip", // 使用gzip压缩
+                    test: productionGzipExtensions,
+                    threshold: 10240, // 对超过10k的数据压缩
+                    minRatio: 0.8, // 压缩率小于0.8才会压缩
+                    deleteOriginalAssets: false, // 是否删除未压缩的源文件，谨慎设置，如果希望提供非gzip的资源，可不设置或者设置为false（比如删除打包后的gz后还可以加载到原始资源文件）
+                })
+            );
+        }
     },
 };
