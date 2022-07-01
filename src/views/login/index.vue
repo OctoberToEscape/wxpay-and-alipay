@@ -187,6 +187,9 @@ export default defineComponent({
             :deep(.van-cell) {
                 @include Padding(0.2rem, 0);
             }
+            :deep(.van-field__control) {
+                font-size: 0.32rem;
+            }
         }
     }
     .aura-tips {
@@ -198,7 +201,7 @@ export default defineComponent({
                 $center: true
             );
             .active {
-                color: $aura_col_blue;
+                color: $aura_col_red;
             }
         }
     }
@@ -207,6 +210,7 @@ export default defineComponent({
         margin: 0 auto 0.24rem auto;
         :deep(.van-button) {
             @include boxSize(100%, 100%);
+            font-size: 0.32rem;
         }
         :deep(.van-button--disabled) {
             background: #e5e5e5 !important;
