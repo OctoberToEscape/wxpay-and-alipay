@@ -376,6 +376,9 @@ export default defineComponent({
             // 拿数据
             getData();
 
+            // 进来就授权
+            if (wechat.value) getWxCode();
+
             // 是否微信H5支付页面跳转回来
             if (route.query.isAlert && route.query.isAlert === "1") {
                 Dialog.confirm({
