@@ -7,6 +7,8 @@
         placeholder
         v-if="!wechat")
     main
+        .logo
+            img(src="https://img01.feimayun.com/wx/manage/kc/2022/2022-07/20220704160614_87883_170x40.png")
         .course-content.mb-20
             .title 课程详情
             .info 
@@ -211,7 +213,7 @@ export default defineComponent({
                 window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${
                     process.env.VUE_APP_BASE_APPID
                 }&redirect_uri=${encodeURIComponent(
-                    window.location.href
+                    window.location.href + "&t=" + new Date().getTime()
                 )}&response_type=code&scope=snsapi_userinfo#wechat_redirect`;
             } else {
                 getOpenid({
@@ -432,6 +434,15 @@ export default defineComponent({
     main {
         flex: 1;
         overflow-y: scroll;
+        .logo {
+            @include Padding(0.16rem, 0.3rem);
+            background: $aura_bg_white;
+            border-bottom: 0.2rem solid $aura_bd_gray;
+            img {
+                @include boxSize(1.7rem, 0.4rem);
+                display: block;
+            }
+        }
         .course-content {
             @include Padding(0.3rem, 0.3rem);
             background: $aura_bg_white;
