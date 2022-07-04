@@ -139,6 +139,10 @@ export default defineComponent({
                 uid: store.state.userInfo ? store.state.userInfo.id : "",
             }).then((res) => {
                 if (res) {
+                    if (route.query.name) res.real_name = route.query.name;
+                    if (route.query.checked)
+                        checked.value =
+                            route.query.checked === "true" ? true : false;
                     data.course = res;
                     document.title = res.channel_name;
                     if (res.end_time !== 0) {
@@ -213,7 +217,11 @@ export default defineComponent({
                 window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${
                     process.env.VUE_APP_BASE_APPID
                 }&redirect_uri=${encodeURIComponent(
-                    window.location.href
+                    window.location.href +
+                        "&name=" +
+                        data.course.real_name +
+                        "&checked=" +
+                        checked.value
                 )}&response_type=code&scope=snsapi_userinfo#wechat_redirect`;
             } else {
                 getOpenid({
