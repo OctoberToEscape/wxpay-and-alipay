@@ -1,6 +1,4 @@
 import axios from "axios";
-import store from "@/store";
-import router from "@/router";
 import { Toast } from "vant";
 
 let loading = null;
@@ -33,7 +31,10 @@ const service = axios.create({
     headers: {
         "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
         Accept: "application/x-www-form-urlencoded;charset=utf-8",
-        apid: "testyun.aura.cn",
+        apid:
+            process.env.NODE_ENV === "production"
+                ? "yun.aura.cn"
+                : "testyun.aura.cn",
         osName: "H5",
     },
     baseURL: process.env.VUE_APP_BASE_API,
