@@ -20,7 +20,7 @@
                     .right
                         .course-title {{course.name}}
                         .price
-                            .now-price.mr-20 ￥{{course.rprice}}
+                            .now-price.mr-20 ￥{{course.preferential_price}}
                             .old-price ￥{{course.price}}
         .order-tips
             .order-sn.mb-30
@@ -35,7 +35,7 @@
                 .val ￥{{course.price}}
             .course-sale
                 .text 限时优惠
-                .val.active -￥{{course.price - course.rprice}}    
+                .val.active -￥{{course.price - course.preferential_price}}    
             //.course-coupons
                 .text 优惠卷
                 .val.active -￥{{course.discount_price}}  

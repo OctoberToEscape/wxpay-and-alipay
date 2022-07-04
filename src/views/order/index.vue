@@ -20,7 +20,7 @@
                 .right
                     .course-title {{course.name}}
                     .price
-                        .now-price.mr-20 ￥{{course.rprice}}
+                        .now-price.mr-20 ￥{{course.preferential_price}}
                         .old-price ￥{{course.price}}
         .real-name.mb-20
             .name-left
