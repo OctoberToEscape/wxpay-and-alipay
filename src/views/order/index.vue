@@ -22,7 +22,7 @@
                     .price
                         .now-price.mr-20 ￥{{course.preferential_price}}
                         .old-price ￥{{course.price}}
-        .real-name.mb-20
+        .real-name.mb-20(v-if="RULESHOW")
             .name-left
                 .text.mb-10 真实姓名（必填项）
                 .tips 请填写真实姓名
@@ -68,7 +68,7 @@
                             span.ml-10 支付宝支付
                         template(#right-icon)
                             van-radio(name="2" checked-color="#ff3737") 
-        .rules
+        .rules(v-if="RULESHOW")
             van-checkbox(
                 v-model="checked"
                 checked-color="#ff3737"
@@ -174,14 +174,21 @@ export default defineComponent({
         const handleBuy = () => {
             const userinfo = localStorage.userInfo;
             if (userinfo) {
+                if (!localStorage.OPENID && wechat.value) {
+                    getWxCode();
+                    return;
+                }
+
                 if (!data.course.real_name) {
                     Toast("请填写真实姓名");
                     return;
                 }
+
                 if (!checked.value) {
                     Toast("请同意支付协议");
                     return;
                 }
+
                 payChoose.value === "1" ? wechatPay() : alipay();
             } else {
                 router.push({ name: "login" });
@@ -351,6 +358,15 @@ export default defineComponent({
             return store.state.isWechat;
         });
 
+        // 协议展示
+        const RULESHOW = computed(() => {
+            if (wechat.value) {
+                return localStorage.OPENID ? true : false;
+            } else {
+                return localStorage.userInfo ? true : false;
+            }
+        });
+
         // 倒计时结束
         const finish = () => getData();
 
@@ -392,6 +408,7 @@ export default defineComponent({
             ruleShow,
             payChoose,
             wechat,
+            RULESHOW,
             ...toRefs(data),
             routerJump,
             handleBuy,
