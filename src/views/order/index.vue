@@ -213,7 +213,7 @@ export default defineComponent({
                 window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${
                     process.env.VUE_APP_BASE_APPID
                 }&redirect_uri=${encodeURIComponent(
-                    window.location.href + "&t=" + new Date().getTime()
+                    window.location.href
                 )}&response_type=code&scope=snsapi_userinfo#wechat_redirect`;
             } else {
                 getOpenid({
@@ -362,11 +362,7 @@ export default defineComponent({
 
         // 协议展示
         const RULESHOW = computed(() => {
-            if (wechat.value) {
-                return localStorage.OPENID ? true : false;
-            } else {
-                return localStorage.userInfo ? true : false;
-            }
+            return localStorage.userInfo ? true : false;
         });
 
         // 倒计时结束
@@ -375,9 +371,6 @@ export default defineComponent({
         onMounted(() => {
             // 拿数据
             getData();
-
-            // 进来就授权
-            if (wechat.value) getWxCode();
 
             // 是否微信H5支付页面跳转回来
             if (route.query.isAlert && route.query.isAlert === "1") {
