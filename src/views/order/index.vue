@@ -184,6 +184,13 @@ export default defineComponent({
         // 支付按钮点击
         const handleBuy = () => {
             const userinfo = localStorage.userInfo;
+
+            // 微信内 支付宝支付
+            if (payChoose.value === "2" && wechat.value) {
+                markShow.value = true;
+                return;
+            }
+
             if (userinfo) {
                 if (
                     !localStorage.OPENID &&
@@ -345,35 +352,31 @@ export default defineComponent({
 
         // 支付宝支付方式
         const alipay = () => {
-            if (wechat.value) {
-                markShow.value = true;
-            } else {
-                aliPay({
-                    channel_id: route.query.channel_id,
-                    uid: store.state.userInfo.id,
-                    pay_method: 1,
-                    real_name: data.course.real_name,
-                    redirect_url: `${window.origin}/aura-h5/pay-success?order_num=`,
-                }).then((res) => {
-                    /**
-                     * 为什么res要判断数据类型
-                     * 因为接口不规范：
-                     * 能支付的时候res是返回的一个字符串形式的form表单
-                     * 已购买res返回的是json形式的data对象
-                     * 所以判断了typeof
-                     */
-                    if (typeof res === "string") {
-                        const div = document.createElement("div");
-                        div.innerHTML = res;
-                        document.body.appendChild(div);
-                        document.forms[0].submit();
-                    } else if (typeof res === "object" && res.status === 3) {
-                        routerJump(res.msg);
-                    } else if (typeof res === "object" && res.status === 4) {
-                        Toast(res.msg);
-                    }
-                });
-            }
+            aliPay({
+                channel_id: route.query.channel_id,
+                uid: store.state.userInfo.id,
+                pay_method: 1,
+                real_name: data.course.real_name,
+                redirect_url: `${window.origin}/aura-h5/pay-success?order_num=`,
+            }).then((res) => {
+                /**
+                 * 为什么res要判断数据类型
+                 * 因为接口不规范：
+                 * 能支付的时候res是返回的一个字符串形式的form表单
+                 * 已购买res返回的是json形式的data对象
+                 * 所以判断了typeof
+                 */
+                if (typeof res === "string") {
+                    const div = document.createElement("div");
+                    div.innerHTML = res;
+                    document.body.appendChild(div);
+                    document.forms[0].submit();
+                } else if (typeof res === "object" && res.status === 3) {
+                    routerJump(res.msg);
+                } else if (typeof res === "object" && res.status === 4) {
+                    Toast(res.msg);
+                }
+            });
         };
 
         // 判断浏览器环境
