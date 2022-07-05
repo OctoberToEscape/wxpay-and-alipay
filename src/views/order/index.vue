@@ -58,7 +58,6 @@
                         template(#right-icon)
                             van-radio(name="1" checked-color="#ff3737") 
                     van-cell(
-                        v-if="!wechat"
                         clickable 
                         @click="payChoose = '2'" 
                         :border="false")
@@ -90,6 +89,11 @@
                 round 
                 block 
                 @click="handleBuy") 立即支付
+    transition(name="fade")
+        img.mark(
+            src="https://img01.feimayun.com/wx/manage/kc/2022/2022-07/20220705100339_72930_750x1308.png"
+            v-if="markShow" 
+            @click="markShow = false")
     rule-popup(
         :show="ruleShow" 
         :rich="course.agreement_content" 
@@ -128,6 +132,7 @@ export default defineComponent({
         const checked = ref(false);
         const ruleShow = ref(false);
         const payChoose = ref("1");
+        const markShow = ref(false);
         const code = ref("");
         const data = reactive({ course: {} });
 
@@ -180,7 +185,11 @@ export default defineComponent({
         const handleBuy = () => {
             const userinfo = localStorage.userInfo;
             if (userinfo) {
-                if (!localStorage.OPENID && wechat.value) {
+                if (
+                    !localStorage.OPENID &&
+                    wechat.value &&
+                    payChoose.value == "1"
+                ) {
                     getWxCode();
                     return;
                 }
@@ -336,31 +345,35 @@ export default defineComponent({
 
         // 支付宝支付方式
         const alipay = () => {
-            aliPay({
-                channel_id: route.query.channel_id,
-                uid: store.state.userInfo.id,
-                pay_method: 1,
-                real_name: data.course.real_name,
-                redirect_url: `${window.origin}/aura-h5/pay-success?order_num=`,
-            }).then((res) => {
-                /**
-                 * 为什么res要判断数据类型
-                 * 因为接口不规范：
-                 * 能支付的时候res是返回的一个字符串形式的form表单
-                 * 已购买res返回的是json形式的data对象
-                 * 所以判断了typeof
-                 */
-                if (typeof res === "string") {
-                    const div = document.createElement("div");
-                    div.innerHTML = res;
-                    document.body.appendChild(div);
-                    document.forms[0].submit();
-                } else if (typeof res === "object" && res.status === 3) {
-                    routerJump(res.msg);
-                } else if (typeof res === "object" && res.status === 4) {
-                    Toast(res.msg);
-                }
-            });
+            if (wechat.value) {
+                markShow.value = true;
+            } else {
+                aliPay({
+                    channel_id: route.query.channel_id,
+                    uid: store.state.userInfo.id,
+                    pay_method: 1,
+                    real_name: data.course.real_name,
+                    redirect_url: `${window.origin}/aura-h5/pay-success?order_num=`,
+                }).then((res) => {
+                    /**
+                     * 为什么res要判断数据类型
+                     * 因为接口不规范：
+                     * 能支付的时候res是返回的一个字符串形式的form表单
+                     * 已购买res返回的是json形式的data对象
+                     * 所以判断了typeof
+                     */
+                    if (typeof res === "string") {
+                        const div = document.createElement("div");
+                        div.innerHTML = res;
+                        document.body.appendChild(div);
+                        document.forms[0].submit();
+                    } else if (typeof res === "object" && res.status === 3) {
+                        routerJump(res.msg);
+                    } else if (typeof res === "object" && res.status === 4) {
+                        Toast(res.msg);
+                    }
+                });
+            }
         };
 
         // 判断浏览器环境
@@ -413,6 +426,7 @@ export default defineComponent({
             checked,
             ruleShow,
             payChoose,
+            markShow,
             wechat,
             RULESHOW,
             ...toRefs(data),
@@ -584,6 +598,11 @@ export default defineComponent({
                 @include boxSize(100%, 100%);
             }
         }
+    }
+    .mark {
+        @include boxSize(100vw, 100vh);
+        @include Position(fixed, 0, 0);
+        z-index: 99;
     }
 }
 </style>
