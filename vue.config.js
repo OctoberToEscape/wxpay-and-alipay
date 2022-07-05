@@ -7,7 +7,11 @@ module.exports = {
     outputDir: "dist",
     assetsDir: "static",
     lintOnSave: false,
-    publicPath: process.env.NODE_ENV === "production" ? "/aura-h5" : "/",
+    publicPath:
+        process.env.NODE_ENV === "production" ||
+        process.env.NODE_ENV === "alpha"
+            ? "/aura-h5"
+            : "/",
     productionSourceMap: false,
     css: {
         loaderOptions: {
@@ -44,7 +48,10 @@ module.exports = {
                 },
                 devtool: "source-map",
             };
-        } else if (process.env.NODE_ENV === "production") {
+        } else if (
+            process.env.NODE_ENV === "production" ||
+            process.env.NODE_ENV === "alpha"
+        ) {
             return {
                 performance: {
                     hints: "warning",
@@ -90,7 +97,10 @@ module.exports = {
             .plugin("webpack-bundle-analyzer")
             .use(require("webpack-bundle-analyzer").BundleAnalyzerPlugin);
 
-        if (process.env.NODE_ENV === "production") {
+        if (
+            process.env.NODE_ENV === "production" ||
+            process.env.NODE_ENV === "alpha"
+        ) {
             config.plugin("compressionPlugin").use(
                 new CompressionPlugin({
                     filename: "[path].gz[query]", // 压缩后的文件名(保持原文件名，后缀加.gz)

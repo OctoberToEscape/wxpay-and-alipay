@@ -31,10 +31,7 @@ const service = axios.create({
     headers: {
         "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
         Accept: "application/x-www-form-urlencoded;charset=utf-8",
-        apid:
-            process.env.NODE_ENV === "production"
-                ? "yun.aura.cn"
-                : "testyun.aura.cn",
+        apid: process.env.VUE_APP_BASE_HEADER_APID,
         osName: "H5",
     },
     baseURL: process.env.VUE_APP_BASE_API,
