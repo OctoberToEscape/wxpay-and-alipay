@@ -8,7 +8,7 @@
         v-if="!wechat")
     .top-cover
         .text.mb-30 登录光环
-        .tips 请完成登录
+        .tips 与高认知者共同成长
     .form.mb-10
         .telephone.mb-20
             van-field(
