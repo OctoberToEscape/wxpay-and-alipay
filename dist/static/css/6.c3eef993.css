@@ -1,0 +1,332 @@
+@charset "UTF-8";
+*[data-v-51cd6857] {
+  margin: 0;
+  outline: 0;
+}
+html[data-v-51cd6857] {
+  overflow-y: scroll;
+  overflow-wrap: break-word;
+}
+body[data-v-51cd6857]::after {
+  content: "\done";
+  position: absolute;
+  font-size: 0;
+  opacity: 0;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, SimSun, sans-serif;
+}
+body[data-v-51cd6857], input[data-v-51cd6857], textarea[data-v-51cd6857], select[data-v-51cd6857] {
+  font-family: "Helvetica Neue", "微软雅黑", sans-serif;
+}
+input[data-v-51cd6857], textarea[data-v-51cd6857], table[data-v-51cd6857] {
+  font-size: 1em;
+  font-family: inherit;
+}
+table[data-v-51cd6857] {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+img[data-v-51cd6857], fieldset[data-v-51cd6857], hr[data-v-51cd6857], iframe[data-v-51cd6857] {
+  border: 0;
+}
+img[data-v-51cd6857], .img[data-v-51cd6857] {
+  display: inline-block;
+  background: no-repeat;
+  vertical-align: top;
+}
+li[data-v-51cd6857] {
+  list-style: none;
+}
+button[data-v-51cd6857], .btn[data-v-51cd6857] {
+  overflow: visible;
+  width: auto;
+  padding: 0;
+  box-sizing: content-box;
+  text-indent: 0;
+  outline: 0;
+  cursor: pointer;
+  border: 0;
+  background: none;
+}
+input[data-v-51cd6857]::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
+sup[data-v-51cd6857], sub[data-v-51cd6857] {
+  vertical-align: baseline;
+}
+blockquote[data-v-51cd6857], q[data-v-51cd6857] {
+  quotes: none;
+}
+blockquote[data-v-51cd6857]::before, blockquote[data-v-51cd6857]::after, q[data-v-51cd6857]:before, q[data-v-51cd6857]::after {
+  content: "";
+  content: none;
+}
+h1[data-v-51cd6857], h2[data-v-51cd6857], h3[data-v-51cd6857], h4[data-v-51cd6857], h5[data-v-51cd6857], h6[data-v-51cd6857] {
+  font-size: 1em;
+  font-weight: normal;
+}
+i[data-v-51cd6857], cite[data-v-51cd6857], em[data-v-51cd6857], var[data-v-51cd6857], dfn[data-v-51cd6857], address[data-v-51cd6857] {
+  font-style: normal;
+}
+b[data-v-51cd6857], strong[data-v-51cd6857] {
+  font-weight: normal;
+}
+textarea[data-v-51cd6857] {
+  resize: vertical;
+}
+input[data-v-51cd6857], textarea[data-v-51cd6857] {
+  -webkit-user-select: text;
+     -moz-user-select: text;
+          user-select: text;
+}
+object[data-v-51cd6857], canvas[data-v-51cd6857], embed[data-v-51cd6857] {
+  display: block;
+}
+a[data-v-51cd6857] {
+  cursor: pointer;
+}
+input[data-v-51cd6857]:-webkit-autofill,
+input[data-v-51cd6857]:-webkit-autofill:hover,
+input[data-v-51cd6857]:-webkit-autofill:focus {
+  box-shadow: 0 0 0px 1000px #fff inset;
+  -webkit-text-fill-color: inherit !important;
+}
+label[data-v-51cd6857] {
+  display: inline;
+  max-width: none;
+  font-weight: normal;
+}
+.mb-10[data-v-51cd6857] {
+  margin-bottom: 0.1rem;
+}
+.mb-15[data-v-51cd6857] {
+  margin-bottom: 0.15rem;
+}
+.mb-20[data-v-51cd6857] {
+  margin-bottom: 0.2rem;
+}
+.mb-25[data-v-51cd6857] {
+  margin-bottom: 0.25rem;
+}
+.mb-30[data-v-51cd6857] {
+  margin-bottom: 0.3rem;
+}
+.mb-35[data-v-51cd6857] {
+  margin-bottom: 0.35rem;
+}
+.mb-40[data-v-51cd6857] {
+  margin-bottom: 0.4rem;
+}
+.mb-50[data-v-51cd6857] {
+  margin-bottom: 0.5rem;
+}
+.mb-60[data-v-51cd6857] {
+  margin-bottom: 0.6rem;
+}
+.mb-65[data-v-51cd6857] {
+  margin-bottom: 0.65rem;
+}
+.mb-70[data-v-51cd6857] {
+  margin-bottom: 0.7rem;
+}
+.mb-90[data-v-51cd6857] {
+  margin-bottom: 0.9rem;
+}
+.mr-10[data-v-51cd6857] {
+  margin-right: 0.1rem;
+}
+.mr-15[data-v-51cd6857] {
+  margin-right: 0.15rem;
+}
+.mr-20[data-v-51cd6857] {
+  margin-right: 0.2rem;
+}
+.mr-30[data-v-51cd6857] {
+  margin-right: 0.3rem;
+}
+.ml-10[data-v-51cd6857] {
+  margin-left: 0.1rem;
+}
+.ml-30[data-v-51cd6857] {
+  margin-left: 0.3rem;
+}
+.mt-10[data-v-51cd6857] {
+  margin-top: 0.1rem;
+}
+.mt-30[data-v-51cd6857] {
+  margin-top: 0.3rem;
+}
+.fade-enter-active[data-v-51cd6857],
+.fade-leave-active[data-v-51cd6857] {
+  transition: opacity 0.5s ease;
+}
+.fade-enter-from[data-v-51cd6857],
+.fade-leave-to[data-v-51cd6857] {
+  opacity: 0;
+}
+.van-toast[data-v-51cd6857] {
+  background: rgba(0, 0, 0, 0.7) !important;
+}
+.van-button--default[data-v-51cd6857] {
+  border: none !important;
+}
+.van-dialog__confirm[data-v-51cd6857] {
+  color: #ff3737 !important;
+}
+.order-details[data-v-51cd6857] {
+  width: 100vw;
+  height: 100vh;
+  background: #f5f5f5;
+}
+.order-details[data-v-51cd6857] .van-nav-bar .van-icon {
+  color: #000;
+}
+.order-details .course-content[data-v-51cd6857] {
+  box-sizing: border-box;
+  padding: 0.3rem 0.3rem;
+  background: #fff;
+}
+.order-details .course-content .title[data-v-51cd6857] {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+.order-details .course-content .title .text[data-v-51cd6857] {
+  font-size: 0.32rem;
+  color: #1c1c1c;
+  line-height: 0.32rem;
+  font-weight: bold;
+}
+.order-details .course-content .title .status[data-v-51cd6857] {
+  font-size: 0.24rem;
+  color: #70b603;
+  line-height: 0.32rem;
+  font-weight: bold;
+}
+.order-details .course-content .info[data-v-51cd6857] {
+  box-sizing: border-box;
+  padding: 0.24rem 0;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  border-bottom: 0.01rem solid #e8e8e8;
+}
+.order-details .course-content .info .left[data-v-51cd6857] {
+  width: 2.3rem;
+  height: 1.48rem;
+}
+.order-details .course-content .info .right[data-v-51cd6857] {
+  width: calc(100% - 2.5rem);
+  height: 1.48rem;
+  position: relative;
+}
+.order-details .course-content .info .right .course-title[data-v-51cd6857] {
+  font-size: 0.3rem;
+  color: #1c1c1c;
+  line-height: 0.4rem;
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.order-details .course-content .info .right .price[data-v-51cd6857] {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+.order-details .course-content .info .right .price .now-price[data-v-51cd6857] {
+  font-size: 0.36rem;
+  color: #1c1c1c;
+  line-height: 0.4rem;
+  font-weight: bold;
+}
+.order-details .course-content .info .right .price .old-price[data-v-51cd6857] {
+  font-size: 0.28rem;
+  color: #999;
+  line-height: 0.4rem;
+  text-decoration: line-through;
+}
+.order-details .course-content .order-tips[data-v-51cd6857] {
+  box-sizing: border-box;
+  padding: 0.4rem 0;
+  padding-bottom: 0.1rem;
+}
+.order-details .course-content .order-tips .order-sn[data-v-51cd6857],
+.order-details .course-content .order-tips .order-date[data-v-51cd6857] {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+.order-details .course-content .order-tips .order-sn .text[data-v-51cd6857],
+.order-details .course-content .order-tips .order-sn .val[data-v-51cd6857],
+.order-details .course-content .order-tips .order-date .text[data-v-51cd6857],
+.order-details .course-content .order-tips .order-date .val[data-v-51cd6857] {
+  font-size: 0.28rem;
+  color: #1c1c1c;
+  line-height: 0.3rem;
+}
+.order-details .price-content[data-v-51cd6857] {
+  box-sizing: border-box;
+  padding: 0.4rem 0.3rem;
+  background: #fff;
+}
+.order-details .price-content .course-price[data-v-51cd6857],
+.order-details .price-content .course-sale[data-v-51cd6857],
+.order-details .price-content .course-coupons[data-v-51cd6857],
+.order-details .price-content .balance[data-v-51cd6857],
+.order-details .price-content .pay[data-v-51cd6857] {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+.order-details .price-content .course-price .text[data-v-51cd6857],
+.order-details .price-content .course-price .val[data-v-51cd6857],
+.order-details .price-content .course-sale .text[data-v-51cd6857],
+.order-details .price-content .course-sale .val[data-v-51cd6857],
+.order-details .price-content .course-coupons .text[data-v-51cd6857],
+.order-details .price-content .course-coupons .val[data-v-51cd6857],
+.order-details .price-content .balance .text[data-v-51cd6857],
+.order-details .price-content .balance .val[data-v-51cd6857],
+.order-details .price-content .pay .text[data-v-51cd6857],
+.order-details .price-content .pay .val[data-v-51cd6857] {
+  font-size: 0.28rem;
+  color: #1c1c1c;
+  line-height: 0.3rem;
+}
+.order-details .price-content .course-price .active[data-v-51cd6857],
+.order-details .price-content .course-sale .active[data-v-51cd6857],
+.order-details .price-content .course-coupons .active[data-v-51cd6857],
+.order-details .price-content .balance .active[data-v-51cd6857],
+.order-details .price-content .pay .active[data-v-51cd6857] {
+  color: #ff3737;
+  font-weight: bold;
+}
+.order-details .real-name[data-v-51cd6857] {
+  box-sizing: border-box;
+  padding: 0.4rem 0.3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  background: #fff;
+}
+.order-details .real-name .text[data-v-51cd6857],
+.order-details .real-name .val[data-v-51cd6857] {
+  font-size: 0.28rem;
+  color: #1c1c1c;
+  line-height: 0.3rem;
+}
