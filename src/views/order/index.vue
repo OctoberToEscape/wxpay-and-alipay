@@ -42,7 +42,7 @@
                 .text 限时特价
                 .value.active ￥{{course.preferential_price}}
         .choose-pay(:class="RULESHOW ? 'mb-15' : 'mb-40'")
-            .title.mb-40 支付方式
+            .title.mb-20 支付方式
             van-radio-group(v-model="payChoose")
                 van-cell-group(:border="false")
                     van-cell(
