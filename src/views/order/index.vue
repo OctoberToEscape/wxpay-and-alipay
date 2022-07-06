@@ -42,7 +42,7 @@
                 .text 限时特价
                 .value.active ￥{{course.preferential_price}}
         .choose-pay(:class="RULESHOW ? 'mb-15' : 'mb-40'")
-            .title.mb-20 支付方式
+            .title.mb-10 支付方式
             van-radio-group(v-model="payChoose")
                 van-cell-group(:border="false")
                     van-cell(
@@ -541,6 +541,7 @@ export default defineComponent({
         }
         .choose-pay {
             @include Padding(0.28rem, 0.3rem);
+            padding-bottom: 0;
             background: $aura_bg_white;
             .title {
                 @include fontColor(

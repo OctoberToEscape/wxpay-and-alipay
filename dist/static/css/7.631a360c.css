@@ -293,6 +293,7 @@ label[data-v-007ed227] {
 .order-index main .choose-pay[data-v-007ed227] {
   box-sizing: border-box;
   padding: 0.28rem 0.3rem;
+  padding-bottom: 0;
   background: #fff;
 }
 .order-index main .choose-pay .title[data-v-007ed227] {
