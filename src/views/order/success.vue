@@ -71,7 +71,7 @@
                         plain 
                         hairline 
                         @click="handleRouter('modify-telephone')") 修改手机号
-            .choose-address(@click="handleRouter('address')")
+            //.choose-address(@click="handleRouter('address')")
                 .address-title.mb-20
                     .left
                         span.mr-10(style="color:#FF3737" v-if="course.address === 1") *
