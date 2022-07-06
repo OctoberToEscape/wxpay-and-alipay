@@ -326,38 +326,27 @@ label[data-v-007ed227] {
 }
 .order-index main .pay-bottom-btn[data-v-007ed227] {
   width: 6.9rem;
-  height: 0.8rem;
+  height: auto;
+  margin: auto;
+}
+.order-index main .pay-bottom-btn .top-time[data-v-007ed227] {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   flex-direction: row;
   flex-wrap: nowrap;
-  margin: auto;
 }
-.order-index main .pay-bottom-btn .left .text[data-v-007ed227] {
+.order-index main .pay-bottom-btn .top-time .text[data-v-007ed227] {
   font-size: 0.28rem;
   color: #1c1c1c;
   line-height: 0.32rem;
-  font-weight: bold;
 }
-.order-index main .pay-bottom-btn .left[data-v-007ed227] .van-count-down {
+.order-index main .pay-bottom-btn .top-time[data-v-007ed227] .van-count-down {
   color: #ff3737;
 }
-.order-index main .pay-bottom-btn .right-mini[data-v-007ed227] {
-  width: 2.76rem;
-  height: 0.8rem;
-}
-.order-index main .pay-bottom-btn .right-mini[data-v-007ed227] .van-button {
-  width: 100%;
-  height: 100%;
-}
-.order-index main .pay-bottom-btn .right-lang[data-v-007ed227] {
+.order-index main .pay-bottom-btn[data-v-007ed227] .van-button {
   width: 100%;
   height: 0.8rem;
-}
-.order-index main .pay-bottom-btn .right-lang[data-v-007ed227] .van-button {
-  width: 100%;
-  height: 100%;
 }
 .order-index .mark[data-v-007ed227] {
   width: 100vw;

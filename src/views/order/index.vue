@@ -9,7 +9,7 @@
     main
         .logo
             img(src="https://img01.feimayun.com/wx/manage/kc/2022/2022-07/20220704160614_87883_170x40.png")
-        .course-content.mb-20
+        .course-content.mb-15
             //.title 课程详情
             .info 
                 .left.mr-20
@@ -24,7 +24,7 @@
                     .price
                         .now-price.mr-20 ￥{{course.preferential_price}}
                         .old-price ￥{{course.price}}
-        .real-name.mb-20(v-if="RULESHOW")
+        .real-name.mb-15(v-if="RULESHOW")
             .name-left
                 .text.mb-10 真实姓名（必填项）
                 .tips 请填写真实姓名
@@ -34,14 +34,14 @@
                     placeholder="请输入姓名"
                     autocomplete="off"
                     maxlength="12")
-        .pay-price.mb-20
+        .pay-price.mb-15
             .price-old.mb-25 
                 .text 课程单价
                 .value ￥{{course.price}}
             .price-new
                 .text 限时特价
                 .value.active ￥{{course.preferential_price}}
-        .choose-pay(:class="RULESHOW ? 'mb-20' : 'mb-50'")
+        .choose-pay(:class="RULESHOW ? 'mb-15' : 'mb-40'")
             .title.mb-40 支付方式
             van-radio-group(v-model="payChoose")
                 van-cell-group(:border="false")
@@ -69,7 +69,7 @@
                             span.ml-10 支付宝支付
                         template(#right-icon)
                             van-radio(name="2" checked-color="#ff3737") 
-        .rules.mb-30(v-if="RULESHOW")
+        .rules.mb-10(v-if="RULESHOW")
             van-checkbox(
                 v-model="checked"
                 checked-color="#ff3737"
@@ -77,18 +77,17 @@
                 span 已阅读并同意
                 span.active(@click.stop="ruleShow = true") 《光环课程支付协议》
         .pay-bottom-btn
-            .left(v-if="course.end_time - course.system_time > 0")
-                .text.mb-10 特价倒计时
+            .top-time.mb-10(v-if="course.end_time - course.system_time > 0")
+                .text.mr-10 特价倒计时:
                 van-count-down(
                     :time="(course.end_time - course.system_time) * 1000"
                     format="DD 天 HH : mm : ss"
                     @finish="finish")
-            div(:class="course.end_time - course.system_time > 0 ? 'right-mini ' : 'right-lang'")
-                van-button(
-                    color="#FF3737" 
-                    round 
-                    block 
-                    @click="handleBuy") 立即支付
+            van-button(
+                color="#FF3737" 
+                round 
+                block 
+                @click="handleBuy") 立即支付
     transition(name="fade")
         img.mark(
             src="https://img01.feimayun.com/wx/manage/kc/2022/2022-07/20220705100339_72930_750x1308.png"
@@ -449,12 +448,9 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 .order-index {
-    // @include uflex($align: normal, $direction: column);
     @include boxSize(100vw, 100vh);
     background: $aura_bg_gray;
     main {
-        // flex: 1;
-        // overflow-y: scroll;
         .logo {
             @include Padding(0.16rem, 0.3rem);
             background: $aura_bg_white;
@@ -571,33 +567,19 @@ export default defineComponent({
             }
         }
         .pay-bottom-btn {
-            @include boxSize(6.9rem, 0.8rem);
-            @include uflex();
+            @include boxSize(6.9rem, auto);
             margin: auto;
-            .left {
+            .top-time {
+                @include uflex(center);
                 .text {
-                    @include fontColor(
-                        $aura_fs_m,
-                        $aura_col_black,
-                        0.32rem,
-                        true
-                    );
+                    @include fontColor($aura_fs_m, $aura_col_black, 0.32rem);
                 }
                 :deep(.van-count-down) {
                     color: $aura_col_red;
                 }
             }
-            .right-mini {
-                @include boxSize(2.76rem, 0.8rem);
-                :deep(.van-button) {
-                    @include boxSize(100%, 100%);
-                }
-            }
-            .right-lang {
+            :deep(.van-button) {
                 @include boxSize(100%, 0.8rem);
-                :deep(.van-button) {
-                    @include boxSize(100%, 100%);
-                }
             }
         }
     }
