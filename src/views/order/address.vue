@@ -27,7 +27,7 @@
                     label="手机号码"
                     placeholder="请填写收件人手机号"
                     maxlength="11"
-                autocomplete="off"
+                    autocomplete="off"
                     :rules="[{ required: true, message: '请填写正确手机号',validator }]")
                 van-field(
                     v-model="form.area"
