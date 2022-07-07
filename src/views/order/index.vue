@@ -9,8 +9,7 @@
     main
         .logo
             img(src="https://img01.feimayun.com/wx/manage/kc/2022/2022-07/20220704160614_87883_170x40.png")
-        .course-content.mb-15
-            //.title 课程详情
+        .course-content.mb-20
             .info 
                 .left.mr-20
                     van-image(
@@ -24,7 +23,7 @@
                     .price
                         .now-price.mr-20 ￥{{course.preferential_price}}
                         .old-price ￥{{course.price}}
-        .real-name.mb-15(v-if="RULESHOW")
+        .real-name.mb-20(v-if="RULESHOW")
             .name-left
                 .text.mb-10 真实姓名（必填项）
                 .tips 请填写真实姓名
@@ -34,15 +33,15 @@
                     placeholder="请输入姓名"
                     autocomplete="off"
                     maxlength="12")
-        .pay-price.mb-15
+        .pay-price.mb-20
             .price-old.mb-25 
                 .text 课程单价
                 .value ￥{{course.price}}
             .price-new
                 .text 限时特价
                 .value.active ￥{{course.preferential_price}}
-        .choose-pay(:class="RULESHOW ? 'mb-15' : 'mb-40'")
-            .title.mb-10 支付方式
+        .choose-pay.mb-20
+            .title.mb-20 支付方式
             van-radio-group(v-model="payChoose")
                 van-cell-group(:border="false")
                     van-cell(
@@ -69,20 +68,21 @@
                             span.ml-10 支付宝支付
                         template(#right-icon)
                             van-radio(name="2" checked-color="#ff3737") 
-        .rules.mb-10(v-if="RULESHOW")
+        .rules(v-if="RULESHOW")
             van-checkbox(
                 v-model="checked"
                 checked-color="#ff3737"
                 icon-size=".32rem") 
                 span 已阅读并同意
                 span.active(@click.stop="ruleShow = true") 《光环课程支付协议》
-        .pay-bottom-btn
-            .top-time.mb-10(v-if="course.end_time - course.system_time > 0")
-                .text.mr-10 特价倒计时:
-                van-count-down(
-                    :time="(course.end_time - course.system_time) * 1000"
-                    format="DD 天 HH : mm : ss"
-                    @finish="finish")
+    .pay-bottom-btn
+        .left(v-if="course.end_time - course.system_time > 0")
+            .text.mb-10 特价倒计时
+            van-count-down(
+                :time="(course.end_time - course.system_time) * 1000"
+                format="DD 天 HH : mm : ss"
+                @finish="finish")
+        div(:class="course.end_time - course.system_time > 0 ? 'right-mini ' : 'right-lang'")
             van-button(
                 color="#FF3737" 
                 round 
@@ -107,6 +107,7 @@ import {
     onMounted,
     reactive,
     toRefs,
+    onUpdated,
 } from "vue";
 import rulePopup from "@/components/popup/rule-popup.vue";
 import store from "@/store";
@@ -134,6 +135,12 @@ export default defineComponent({
         const markShow = ref(false);
         const code = ref("");
         const data = reactive({ course: {} });
+
+        // 解决手机浏览器底部控件遮挡问题
+        const getClientHeight = () => {
+            document.querySelector(".order-index").style.height =
+                document.documentElement.clientHeight + "px";
+        };
 
         // 页面数据
         const getData = () => {
@@ -391,6 +398,10 @@ export default defineComponent({
         // 倒计时结束
         const finish = () => getData();
 
+        onUpdated(() => {
+            getClientHeight();
+        });
+
         onMounted(() => {
             // 拿数据
             getData();
@@ -442,15 +453,19 @@ export default defineComponent({
             onBridgeReady,
             alipay,
             finish,
+            getClientHeight,
         };
     },
 });
 </script>
 <style lang="scss" scoped>
 .order-index {
+    @include uflex($align: normal, $direction: column);
     @include boxSize(100vw, 100vh);
     background: $aura_bg_gray;
     main {
+        flex: 1;
+        overflow-y: scroll;
         .logo {
             @include Padding(0.16rem, 0.3rem);
             background: $aura_bg_white;
@@ -460,9 +475,9 @@ export default defineComponent({
             }
         }
         .course-content {
-            @include Padding(0.4rem, 0.3rem);
+            @include Padding(0.3rem, 0.3rem);
+            padding-top: 0;
             background: $aura_bg_white;
-            padding-top: 0.04rem;
             .title {
                 @include fontColor(
                     $aura_fs_default,
@@ -512,7 +527,7 @@ export default defineComponent({
             }
         }
         .real-name {
-            @include Padding(0.28rem, 0.3rem);
+            @include Padding(0.36rem, 0.3rem);
             @include uflex();
             background: $aura_bg_white;
             .name-left {
@@ -528,7 +543,7 @@ export default defineComponent({
             }
         }
         .pay-price {
-            @include Padding(0.28rem, 0.3rem);
+            @include Padding(0.4rem, 0.3rem);
             background: $aura_bg_white;
             .price-old,
             .price-new {
@@ -540,8 +555,8 @@ export default defineComponent({
             }
         }
         .choose-pay {
-            @include Padding(0.28rem, 0.3rem);
-            padding-bottom: 0;
+            @include Padding(0.4rem, 0.3rem);
+            padding-bottom: 0.2rem;
             background: $aura_bg_white;
             .title {
                 @include fontColor(
@@ -567,24 +582,36 @@ export default defineComponent({
                 color: $aura_col_blue;
             }
         }
-        .pay-bottom-btn {
-            @include boxSize(6.9rem, auto);
-            margin: auto;
-            .top-time {
-                @include uflex(center);
-                .text {
-                    @include fontColor($aura_fs_m, $aura_col_black, 0.32rem);
-                }
-                :deep(.van-count-down) {
-                    color: $aura_col_red;
-                }
+    }
+    .pay-bottom-btn {
+        @include boxSize(100%, auto);
+        @include Padding(0.24rem, 0.32rem);
+        @include uflex();
+        height: calc(80px + constant(safe-area-inset-bottom));
+        height: calc(80px + env(safe-area-inset-bottom));
+        background: $aura_bg_white;
+        box-shadow: 0 0 0.1rem 0 #ccc;
+        .left {
+            .text {
+                @include fontColor($aura_fs_m, $aura_col_black, 0.32rem, true);
             }
+            :deep(.van-count-down) {
+                color: $aura_col_red;
+            }
+        }
+        .right-mini {
+            @include boxSize(2.76rem, 0.8rem);
             :deep(.van-button) {
-                @include boxSize(100%, 0.8rem);
+                @include boxSize(100%, 100%);
+            }
+        }
+        .right-lang {
+            @include boxSize(100%, 0.8rem);
+            :deep(.van-button) {
+                @include boxSize(100%, 100%);
             }
         }
     }
-
     .mark {
         @include boxSize(100vw, 100vh);
         @include Position(fixed, 0, 0);
